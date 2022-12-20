@@ -4,10 +4,10 @@ import { ProductCard } from "./ProductCard";
 import { StyledProductsList } from "./styled";
 
 export function ProductsDashboard() {
-  const {products} = useContext(CartContext)
+  const {filtered} = useContext(CartContext)
   return (
     <StyledProductsList className="container">
-      {products.map((product, index) => (
+      {filtered.map((product, index) => (
         <ProductCard
           key={index}
           product={product}

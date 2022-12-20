@@ -18,6 +18,3 @@ export interface iUserContextValue{
     loading: boolean;
 }
 
-export interface iErrorDefault{
-    user: iRegisterData;
-}

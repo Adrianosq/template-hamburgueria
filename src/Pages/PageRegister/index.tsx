@@ -4,7 +4,7 @@ import { StyledPageRegister } from "./styled";
 
 export function PageRegister() {
   return (
-    <StyledPageRegister className="container">
+    <StyledPageRegister>
       <HeaderInfo />
       <FormRegister />
     </StyledPageRegister>

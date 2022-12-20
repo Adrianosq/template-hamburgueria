@@ -2,17 +2,38 @@ import { StyledHeader } from "./styled";
 import logo from "../../../assets/logo.svg";
 import buttonLogout from "../../../assets/logout.png";
 import buttonCart from "../../../assets/cart.png";
+import lupa from "../../../assets/search.png";
 import { ButtonCart, ButtonLogout } from "../../../styles/buttons";
 import { useContext } from "react";
 import { CartContext } from "../../../contexts/CartContext";
 import Modal from "react-modal";
 import { Cart } from "./Cart";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 Modal.setAppElement("#root");
 
+export interface iSearch{
+  search: string;
+}
+
 export function HeaderDashboard() {
-  const { logout, cartProducts, modalIsOpen, openModal, closeModal } =
-    useContext(CartContext);
+  const {
+    filterSearch,
+    logout,
+    cartProducts,
+    modalIsOpen,
+    openModal,
+    closeModal,
+    buttonFilter, 
+    resetSearch
+  } = useContext(CartContext);
+
+  const { register, handleSubmit, reset } = useForm<iSearch>({});
+
+  const onSubmit: SubmitHandler<iSearch> = (data) => {
+    filterSearch(data);
+    reset()
+  };
   return (
     <StyledHeader>
       <div className="container header">
@@ -20,11 +41,18 @@ export function HeaderDashboard() {
           <img src={logo} alt="logo" />
         </div>
         <div className="search">
-          <form className="searchForm">
+          <img className="searchLup" src={lupa} alt="search" />
+          {buttonFilter && (
+            <button onClick={resetSearch} className="cleanButton">
+              X
+            </button>
+          )}
+          <form onSubmit={handleSubmit(onSubmit)} className="searchForm">
             <input
               type="text"
               className="searchInput"
               placeholder="Digitar Pesquisa"
+              {...register("search")}
             />
             <button type="submit" className="buttonSearch">
               Pesquisar

@@ -9,9 +9,9 @@ export function RoutesMain() {
     <Routes>
       <Route path="/login" element={<PageLogin />} />
       <Route path="/register" element={<PageRegister />} />
-      {/* <Route element={<ProtectRoutes />}> */}
+      <Route element={<ProtectRoutes />}>
         <Route path="/dashboard" element={<PageDashboard />} />
-      {/* </Route> */}
+      </Route>
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

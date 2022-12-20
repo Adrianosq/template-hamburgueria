@@ -1,13 +1,15 @@
+import { iSearch } from "../../Pages/PageDashboard/HeaderDashboard";
+
 export interface iCartContextProps {
     children: React.ReactNode
 }
 
 export interface iProducts{
-    id?: number;
-    name?: string;
-    img?: string;
-    price?: number;
-    category?: string;
+    id: number;
+    name: string;
+    img: string;
+    price: number;
+    category: string;
     qtd?: number | undefined;
 }
 
@@ -23,7 +25,10 @@ export interface iCartContextValue{
     removeProductCart: (products: iProducts) => void;
     addProductQuantCart: (products: iProducts) => void;
     subProductQuantCart: (products: iProducts) => void;
-    counterProductCart: number;
     triggerGoList: boolean;
     goList: () => void;
+    filterSearch: (filter: iSearch) => void;
+    filtered: iProducts[];
+    buttonFilter: boolean;
+    resetSearch: () => void;
 }

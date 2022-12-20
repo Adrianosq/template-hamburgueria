@@ -4,7 +4,7 @@ import { StyledPageLogin } from "./styled";
 
 export function PageLogin() {
   return (
-    <StyledPageLogin className="container">
+    <StyledPageLogin>
       <FormLogin />
       <HeaderInfo />
     </StyledPageLogin>

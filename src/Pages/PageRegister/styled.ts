@@ -9,5 +9,6 @@ export const StyledPageRegister = styled.section`
 
   @media (max-width: 600px) {
         flex-direction: column;
+        padding: 10px;
     }
 `;

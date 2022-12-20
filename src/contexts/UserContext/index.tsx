@@ -1,11 +1,10 @@
-import { AxiosError } from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { iLoginData } from "../../Pages/PageLogin/FormLogin";
 import { iRegisterData } from "../../Pages/PageRegister/FormRegister";
 import { api } from "../../services/api";
-import { iErrorDefault, iUserContextProps, iUserContextValue } from "./types";
+import { iUserContextProps, iUserContextValue } from "./types";
 
 export const UserContext = createContext({} as iUserContextValue);
 
@@ -14,54 +13,54 @@ export function UserProvider({ children }: iUserContextProps) {
   const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("@user");
+  useEffect(() => {
+    const token = localStorage.getItem("@user");
 
-  //   async function loadUser() {
-  //     if (!token) {
-  //       setLoading(false);
-  //       return;
-  //     } else {
-  //       try {
-  //         const { data } = await api.get(`/users/${1}`, {
-  //           headers: {
-  //             authorization: `Bearer ${token}`,
-  //           },
-  //         });
-  //       //   setUser("200");
-  //         //   navigate("/dashboard");
-  //         console.log(data);
-  //       } catch (error) {
-  //         console.error(error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     }
-  //   }
-  //   loadUser();
-  // }, []);
+    async function loadUser() {
+      if (!token) {
+        setLoading(false);
+        return;
+      } else {
+        try {
+          const { data } = await api.get(`/users/${1}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          setUser(true);
+          navigate("/dashboard");
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    loadUser();
+  }, []);
 
-  async function userLogin(data: iLoginData) {
+  async function userLogin(userData: iLoginData) {
     try {
-      const response = await api.post("/login", data);
+      const {data} = await api.post("/login", userData);
 
-      // setUser(true);
-      localStorage.setItem("@user", response.data.accessToken);
+      setUser(true);
+      localStorage.setItem("@user", data.accessToken);
 
       toast.success("Login realizado com sucesso!");
+      console.error(data)
 
       setTimeout(() => {
         navigate("/dashboard");
       }, 3000);
     } catch (error) {
-      console.error(error);
-    } finally {
-    }
+      toast.error("Não foi possivel efetuar o login!")
+      console.error(error)
+    } 
   }
 
   async function userRegister(data: iRegisterData) {
     try {
-      const response = await api.post<iRegisterData>("/users", data);
+      const response = await api.post("/users", data);
 
       toast.success("Cadastro Realizado com sucesso!");
       navigate("/login");

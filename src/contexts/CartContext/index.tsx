@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { iSearch } from "../../Pages/PageDashboard/HeaderDashboard";
 import { api } from "../../services/api";
 import { iCartContextProps, iCartContextValue, iProducts } from "./types";
 
@@ -11,11 +12,10 @@ export function CartProvider({ children }: iCartContextProps) {
   const [filtered, setFiltered] = useState<iProducts[]>([]);
   const [cartProducts, setCartProducts] = useState<iProducts[]>([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [counterProductCart, setCounterProductCart] = useState(0);
   const [buttonFilter, setButtonFilter] = useState(false);
   const [triggerGoList, setTriggerGoList] = useState<boolean>(false);
 
-  const goList= () => setTriggerGoList(!triggerGoList);
+  const goList = () => setTriggerGoList(!triggerGoList);
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export function CartProvider({ children }: iCartContextProps) {
           },
         });
         setProducts(response.data);
-        
+        setFiltered(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -37,18 +37,22 @@ export function CartProvider({ children }: iCartContextProps) {
     getAllProducts();
   }, []);
 
-  // function filterSearch(filter) {
-  //   const productFiltered = products.filter((product) =>
-  //     product.name.toLowerCase().includes(filter.description.toLowerCase())
-  //   );
-  //   if(productFiltered.length > 0){
-  //     setFiltered(productFiltered);
-  //     setButtonFilter(true);
-  //   } else{
-  //     toast.warn("Produto não encontrado!")
-  //   }
-   
-  // }
+  function filterSearch({ search }: iSearch) {
+    const productFiltered = products.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
+    if (productFiltered.length > 0) {
+      setFiltered(productFiltered);
+      setButtonFilter(true);
+    } else {
+      toast.warn("Produto não encontrado!");
+    }
+  }
+
+  function resetSearch() {
+    setFiltered(products);
+    setButtonFilter(false);
+  }
 
   function openModal() {
     setModalIsOpen(true);
@@ -80,28 +84,16 @@ export function CartProvider({ children }: iCartContextProps) {
     toast.success("Todos os produtos removidos com sucesso!");
   }
 
-  useEffect(() =>{
-
-  }, [])
+  useEffect(() => {}, []);
   function addProductQuantCart(data: iProducts) {
-    const copyCartProducts = [...cartProducts]
-
-    const item = copyCartProducts.find(product => product.id === data.id)
-
-    if(!item){
-      copyCartProducts.push({qtd: 1})
-      console.log("oi")
-    } else{
-      item.qtd = item.qtd === undefined ? 0 : + 1
-      console.log(copyCartProducts)
-
+    if (!data.qtd) data.qtd = 1;
+    if (data.qtd) {
+      data.qtd = data.qtd + 1;
     }
-    setCartProducts(copyCartProducts)
-    goList()
   }
 
-  function subProductQuantCart() {
-    setCounterProductCart(counterProductCart - 1);
+  function subProductQuantCart(data: iProducts) {
+    if (data.qtd && data.qtd !== 1) data.qtd = data.qtd - 1;
   }
 
   function logout() {
@@ -123,8 +115,12 @@ export function CartProvider({ children }: iCartContextProps) {
         removeProductCart,
         addProductQuantCart,
         subProductQuantCart,
-        counterProductCart,
-        triggerGoList, goList,
+        triggerGoList,
+        goList,
+        filterSearch,
+        filtered,
+        buttonFilter,
+        resetSearch,
       }}
     >
       {children}

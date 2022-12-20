@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { CartContext } from "../../../../../../contexts/CartContext";
 
 export function CartProductCard(props: any) {
-  const { removeProductCart, addProductQuantCart, subProductQuantCart} = useContext(CartContext)
+  const { removeProductCart, addProductQuantCart, subProductQuantCart, goList } =
+    useContext(CartContext);
   const product: iProducts = props.product;
 
   return (
@@ -14,9 +15,22 @@ export function CartProductCard(props: any) {
       <img src={product.img} alt={product.name} />
       <h2>{product.name}</h2>
       <div>
-        <button onClick={() => subProductQuantCart(product)}>-</button>
-        <p>{product.qtd}</p>
-        <button onClick={() => addProductQuantCart(product)}>+</button>
+        <button
+          onClick={() => {
+            subProductQuantCart(product), goList();
+          }}
+        >
+          -
+        </button>
+        <p>{product.qtd === undefined ? 1 : product.qtd}</p>
+        <button
+          onClick={() => {
+            addProductQuantCart(product);
+            goList();
+          }}
+        >
+          +
+        </button>
       </div>
 
       <ButtonCartDelete onClick={() => removeProductCart(product)}>
