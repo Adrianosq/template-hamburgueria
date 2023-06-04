@@ -64,8 +64,10 @@ export function CartProvider({ children }: iCartContextProps) {
 
   function addProductCart(productCart: iProducts) {
     if (cartProducts.includes(productCart)) {
+      
       toast.error(`${productCart.name} já foi adicionado ao carrinho!`);
     } else {
+      productCart.qtd = 1
       setCartProducts([...cartProducts, productCart]);
       toast.success(`${productCart.name} adicionado com sucesso no carrinho!`);
     }
@@ -84,16 +86,16 @@ export function CartProvider({ children }: iCartContextProps) {
     toast.success("Todos os produtos removidos com sucesso!");
   }
 
-  useEffect(() => {}, []);
   function addProductQuantCart(data: iProducts) {
-    if (!data.qtd) data.qtd = 1;
+    
     if (data.qtd) {
-      data.qtd = data.qtd + 1;
+       const quantidade = data.qtd += 1;
+       data.price = data.price * quantidade
     }
   }
 
   function subProductQuantCart(data: iProducts) {
-    if (data.qtd && data.qtd !== 1) data.qtd = data.qtd - 1;
+    if (data.qtd && data.qtd !== 1) data.qtd -= 1;
   }
 
   function logout() {

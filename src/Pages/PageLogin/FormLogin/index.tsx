@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler, ValidationMode } from "react-hook-form";
 import { Input } from "../../../components/Input";
-import { ButtonCadastrar, ButtonLogin } from "../../../styles/buttons";
+import { ButtonLogin } from "../../../styles/buttons";
 import { StyledFormLogin } from "./styled";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginPageSchema } from "./schemaLogin";
@@ -52,9 +52,9 @@ export function FormLogin() {
       <span>
         Crie sua conta para saborear muitas delícias e matar sua fome!
       </span>
-      <ButtonCadastrar type="button">
-        <Link to={"/register"}>Cadastrar</Link>
-      </ButtonCadastrar>
+      
+        <Link className="buttonCadastrar" to={"/register"}>Cadastrar</Link>
+      
     </StyledFormLogin>
   );
 }

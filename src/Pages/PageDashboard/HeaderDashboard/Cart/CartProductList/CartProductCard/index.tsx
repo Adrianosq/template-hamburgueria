@@ -8,7 +8,7 @@ import { CartContext } from "../../../../../../contexts/CartContext";
 export function CartProductCard(props: any) {
   const { removeProductCart, addProductQuantCart, subProductQuantCart, goList } =
     useContext(CartContext);
-  const product: iProducts = props.product;
+  const product: iProducts = props.product;   
 
   return (
     <StyledCartProductCard>
@@ -22,7 +22,7 @@ export function CartProductCard(props: any) {
         >
           -
         </button>
-        <p>{product.qtd === undefined ? 1 : product.qtd}</p>
+        <p>{product.qtd}</p>
         <button
           onClick={() => {
             addProductQuantCart(product);

@@ -16,13 +16,13 @@ export function UserProvider({ children }: iUserContextProps) {
   useEffect(() => {
     const token = localStorage.getItem("@user");
 
-    async function loadUser() {
+    async function loadUser(endpoint: string, id: number) {
       if (!token) {
         setLoading(false);
         return;
       } else {
         try {
-          const { data } = await api.get(`/users/${1}`, {
+          const { data } = await api.get(`/${endpoint}/${id}`, {
             headers: {
               authorization: `Bearer ${token}`,
             },
@@ -36,31 +36,29 @@ export function UserProvider({ children }: iUserContextProps) {
         }
       }
     }
-    loadUser();
+    loadUser("users", 1);
   }, []);
 
   async function userLogin(userData: iLoginData) {
     try {
-      const {data} = await api.post("/login", userData);
+      const { data } = await api.post("/login", userData);
 
       setUser(true);
       localStorage.setItem("@user", data.accessToken);
 
       toast.success("Login realizado com sucesso!");
-      console.error(data)
+      console.error(data);
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
+      navigate("/dashboard");
     } catch (error) {
-      toast.error("Não foi possivel efetuar o login!")
-      console.error(error)
-    } 
+      toast.error("Não foi possivel efetuar o login!");
+      console.error(error);
+    }
   }
 
   async function userRegister(data: iRegisterData) {
     try {
-      const response = await api.post("/users", data);
+      await api.post("/users", data);
 
       toast.success("Cadastro Realizado com sucesso!");
       navigate("/login");

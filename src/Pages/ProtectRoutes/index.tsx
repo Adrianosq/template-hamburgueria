@@ -6,7 +6,7 @@ export function ProtectRoutes() {
   const { user, loading } = useContext(UserContext);
 
   if (loading) {
-    return null; // pode ser o componente de loading
+    return null; 
   }
 
   return user ? <Outlet /> : <Navigate to="/login" />;

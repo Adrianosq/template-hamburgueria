@@ -25,14 +25,12 @@ export const ButtonCadastrar = styled.button`
     border: 1px solid var(--color-gray-0);
     border-radius: 8px;
 
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-gray-200);
+
     cursor: pointer;
 
-    > a{
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 16px;
-        color: var(--color-gray-200);
-    }
 `
 export const ButtonLogout = styled.button`
     cursor: pointer;
